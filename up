@@ -1,0 +1,9 @@
+#!/bin/bash
+
+echo "### Starting application..."
+docker-compose up -d
+
+echo "### Application running in http://localhost:8080"
+echo ""
+echo "Start watching files..."
+./run npm run watch

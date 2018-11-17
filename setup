@@ -1,0 +1,32 @@
+#!/bin/bash
+
+# Build docker images
+echo "### Building images ###"
+docker-compose build
+
+echo "### Starting containers ###"
+docker-compose up -d
+
+if [ ! -f .env ]; then
+    echo "### Creating .env file ###"
+    cp .env.example .env
+fi
+
+# Composer dependencies
+echo "### Installing composer dependencies ###"
+docker run --rm --interactive --tty \
+    --volume $PWD:/app \
+    composer install
+
+# NPM dependencies
+echo "### Installing npm dependencies ###"
+./run npm install
+
+# Application setup
+echo "### Application setup ###"
+./run php artisan key:generate
+./run php artisan migrate
+
+echo "### DONE! ###"
+echo ""
+echo "Run ./up to start the application"
