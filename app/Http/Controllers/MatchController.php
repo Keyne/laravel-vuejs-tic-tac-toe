@@ -2,13 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Input;
 
-class MatchController extends Controller {
-
-    public function index() {
-        return view('index');
-    }
+class MatchController extends BaseController {
 
     /**
      * Returns a list of matches
