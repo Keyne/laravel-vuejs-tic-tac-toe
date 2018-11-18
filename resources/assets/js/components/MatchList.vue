@@ -6,13 +6,21 @@
         </h3></div>
 
         <div class="list-group list-group-flush">
-            <template v-if="matches.length">
+            <template v-if="loading === false">
+                <div v-if="!matches.length">
+                    <p class="alert alert-info">No matches created yet. Be the first one :)</p>
+                </div>
                 <div v-for="match in matches"
                      class="list-group-item text-body d-flex justify-content-between ">
                     {{ match.name }}
                     <div class="" role="group">
-                        <button type="button" class="btn btn-info" @click="showMatch(match.id)">
+                        <button type="button" class="btn btn-info" @click="showMatch(match.id)"
+                                v-if="match.player_1 == null || match.player_2 == null">
                             join
+                        </button>
+                        <button type="button" class="btn btn-dark" @click="showMatch(match.id)"
+                                v-if="!(match.player_1 == null || match.player_2 == null)">
+                            View
                         </button>
                         <button type="button" class="btn btn-danger" @click="removeMatch(match.id)">
                             remove
@@ -33,18 +41,18 @@
 </template>
 
 <script>
-    export default {
-        props: ['matches', 'loading'],
-        methods: {
-            showMatch(id) {
-                this.$emit('showMatch', id)
-            },
-            createMatch() {
-                this.$emit('createMatch')
-            },
-            removeMatch(id) {
-                this.$emit('removeMatch', id)
-            },
-        }
+  export default {
+    props: ['matches', 'loading'],
+    methods: {
+      showMatch(id) {
+        this.$emit('showMatch', id)
+      },
+      createMatch() {
+        this.$emit('createMatch')
+      },
+      removeMatch(id) {
+        this.$emit('removeMatch', id)
+      },
     }
+  }
 </script>

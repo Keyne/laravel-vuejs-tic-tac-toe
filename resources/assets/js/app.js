@@ -3,15 +3,15 @@
  * Tienda Nube - Nuvem Shop
  */
 
-require('./bootstrap');
+require('./bootstrap')
 
-window.Vue = require('vue');
+window.Vue = require('vue')
 
-const App = require('./components/App.vue');
+const App = require('./components/App.vue')
 
 const app = new Vue({
-    el: '#app',
-    components: {
-        'app': App
-    }
-});
+  el: '#app',
+  components: {
+    'app': App
+  }
+})

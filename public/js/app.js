@@ -13996,7 +13996,7 @@ module.exports = Cancel;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(14);
-module.exports = __webpack_require__(55);
+module.exports = __webpack_require__(56);
 
 
 /***/ }),
@@ -47295,7 +47295,7 @@ var normalizeComponent = __webpack_require__(3)
 /* script */
 var __vue_script__ = __webpack_require__(41)
 /* template */
-var __vue_template__ = __webpack_require__(54)
+var __vue_template__ = __webpack_require__(55)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -47340,10 +47340,13 @@ module.exports = Component.exports
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api__ = __webpack_require__(42);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__MatchList__ = __webpack_require__(43);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__MatchList__ = __webpack_require__(44);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__MatchList___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__MatchList__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Match__ = __webpack_require__(46);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Match__ = __webpack_require__(47);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Match___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__Match__);
+//
+//
+//
 //
 //
 //
@@ -47369,108 +47372,151 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 var MATCHES = 'matches',
-    MATCH = 'match';
+    MATCH = 'match',
+    RELOAD_TIME = 1000;
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    components: { MatchList: __WEBPACK_IMPORTED_MODULE_1__MatchList___default.a, Match: __WEBPACK_IMPORTED_MODULE_2__Match___default.a },
-    data: function data() {
-        return {
-            matches: {},
-            match: {},
-            loading: true,
-            current: MATCHES
-        };
+  components: { MatchList: __WEBPACK_IMPORTED_MODULE_1__MatchList___default.a, Match: __WEBPACK_IMPORTED_MODULE_2__Match___default.a },
+  data: function data() {
+    return {
+      matches: {},
+      match: {},
+      currentPlayer: null,
+      loading: true,
+      current: MATCHES
+    };
+  },
+  computed: {
+    inMatches: function inMatches() {
+      return this.current === MATCHES;
     },
-    computed: {
-        inMatches: function inMatches() {
-            return this.current === MATCHES;
-        },
-        inMatch: function inMatch() {
-            return this.current === MATCH;
-        }
-    },
-    methods: {
-        showMatch: function showMatch(id) {
-            var _this = this;
-
-            var that = this;
-            that.loading = true;
-            // Load match
-            __WEBPACK_IMPORTED_MODULE_0__api__["a" /* default */].match({ id: id }).then(function (_ref) {
-                var data = _ref.data;
-
-                _this.match = data;
-                that.loading = false;
-                _this.current = MATCH;
-            });
-        },
-        loadMatch: function loadMatch(id) {
-            var _this2 = this;
-
-            var that = this;
-            that.loading = true;
-            // Load match
-            __WEBPACK_IMPORTED_MODULE_0__api__["a" /* default */].match({ id: id }).then(function (_ref2) {
-                var data = _ref2.data;
-
-                _this2.match = data;
-                that.loading = false;
-            });
-        },
-        showMatches: function showMatches() {
-            var that = this;
-            that.loading = true;
-            this.current = MATCHES;
-            // Load matches
-            __WEBPACK_IMPORTED_MODULE_0__api__["a" /* default */].matches().then(function (_ref3) {
-                var data = _ref3.data;
-
-                that.matches = data;
-                that.loading = false;
-            });
-        },
-        handleMove: function handleMove(data) {
-            var _this3 = this;
-
-            var that = this;
-            that.loading = true;
-            __WEBPACK_IMPORTED_MODULE_0__api__["a" /* default */].move(data).then(function (_ref4) {
-                var data = _ref4.data;
-
-                _this3.match = data;
-                that.loading = false;
-            });
-        },
-        createMatch: function createMatch() {
-            var _this4 = this;
-
-            var that = this;
-            that.loading = true;
-            __WEBPACK_IMPORTED_MODULE_0__api__["a" /* default */].create().then(function (_ref5) {
-                var data = _ref5.data;
-
-                that.matches = data;
-                that.loading = false;
-                _this4.current = MATCHES;
-            });
-        },
-        removeMatch: function removeMatch(id) {
-            var _this5 = this;
-
-            var that = this;
-            that.loading = true;
-            __WEBPACK_IMPORTED_MODULE_0__api__["a" /* default */].destroy({ id: id }).then(function (_ref6) {
-                var data = _ref6.data;
-
-                that.matches = data;
-                that.loading = false;
-                _this5.current = MATCHES;
-            });
-        }
-    },
-    mounted: function mounted() {
-        this.showMatches();
+    inMatch: function inMatch() {
+      return this.current === MATCH;
     }
+  },
+  methods: {
+    showMatch: function showMatch(id) {
+      var _this = this;
+
+      this.loading = true;
+      // Load match
+      __WEBPACK_IMPORTED_MODULE_0__api__["a" /* default */].match({ id: id }).then(function (_ref) {
+        var data = _ref.data;
+
+        _this.match = data;
+        _this.loading = false;
+        _this.current = MATCH;
+      });
+    },
+    loadMatch: function loadMatch(id) {
+      var _this2 = this;
+
+      this.loading = true;
+      __WEBPACK_IMPORTED_MODULE_0__api__["a" /* default */].match({ id: id }).then(function (_ref2) {
+        var data = _ref2.data;
+
+        _this2.match = data;
+        _this2.loading = false;
+      });
+    },
+    fetchCurrentPlayer: function fetchCurrentPlayer(id) {
+      var _this3 = this;
+
+      this.loading = true;
+      __WEBPACK_IMPORTED_MODULE_0__api__["a" /* default */].currentPlayer({ id: id }).then(function (_ref3) {
+        var data = _ref3.data;
+
+        _this3.currentPlayer = data.player;
+        _this3.loading = false;
+      });
+    },
+    restartSession: function restartSession() {
+      var _this4 = this;
+
+      this.loading = true;
+      __WEBPACK_IMPORTED_MODULE_0__api__["a" /* default */].leave().then(function () {
+        _this4.currentPlayer = null;
+        _this4.loading = false;
+      });
+    },
+    showMatches: function showMatches() {
+      var _this5 = this;
+
+      this.loading = true;
+      this.current = MATCHES;
+      // Load matches
+      __WEBPACK_IMPORTED_MODULE_0__api__["a" /* default */].matches().then(function (_ref4) {
+        var data = _ref4.data;
+
+        _this5.matches = data;
+        _this5.loading = false;
+      });
+
+      setInterval(function () {
+        __WEBPACK_IMPORTED_MODULE_0__api__["a" /* default */].matches().then(function (_ref5) {
+          var data = _ref5.data;
+
+          _this5.matches = data;
+        });
+      }, RELOAD_TIME);
+    },
+    handleMove: function handleMove(data) {
+      var _this6 = this;
+
+      if (!this.currentPlayer) {
+        return alert("You are just watching...");
+      }
+      var that = this;
+      that.loading = true;
+      __WEBPACK_IMPORTED_MODULE_0__api__["a" /* default */].move(data).then(function (_ref6) {
+        var data = _ref6.data;
+
+        _this6.match = data;
+        that.loading = false;
+      });
+    },
+    fillPlayerSlot: function fillPlayerSlot(playerData) {
+      var _this7 = this;
+
+      this.loading = true;
+      __WEBPACK_IMPORTED_MODULE_0__api__["a" /* default */].registerPlayer(playerData).then(function (_ref7) {
+        var data = _ref7.data;
+
+        _this7.match = data;
+        _this7.loading = false;
+        _this7.fetchCurrentPlayer(_this7.match.id);
+      });
+    },
+    createMatch: function createMatch() {
+      var _this8 = this;
+
+      var that = this;
+      that.loading = true;
+      __WEBPACK_IMPORTED_MODULE_0__api__["a" /* default */].create().then(function (_ref8) {
+        var data = _ref8.data;
+
+        that.matches = data;
+        that.loading = false;
+        _this8.current = MATCHES;
+      });
+    },
+    removeMatch: function removeMatch(id) {
+      var _this9 = this;
+
+      var that = this;
+      that.loading = true;
+      __WEBPACK_IMPORTED_MODULE_0__api__["a" /* default */].destroy({ id: id }).then(function (_ref9) {
+        var data = _ref9.data;
+
+        that.matches = data;
+        that.loading = false;
+        _this9.current = MATCHES;
+      });
+    }
+  },
+  mounted: function mounted() {
+    this.showMatches();
+  }
 });
 
 /***/ }),
@@ -47481,50 +47527,284 @@ var MATCHES = 'matches',
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
 
+var sprintf = __webpack_require__(43).sprintf;
 
 var URL_MATCHES = '/api/match',
     URL_MATCH = '/api/match/',
+    URL_MATCH_LEAVE = '/api/match/all/leave',
+    URL_MATCH_PLAYER_REGISTER = '/api/match/%s/player',
+    URL_MATCH_PLAYER_CURRENT = '/api/match/%s/player/session',
     URL_MOVE = '/api/match/',
     URL_CREATE = '/api/match',
     URL_DELETE = '/api/match/';
 
 /* harmony default export */ __webpack_exports__["a"] = ({
-    matches: function matches() {
-        return __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get(URL_MATCHES);
-    },
-    match: function match(_ref) {
-        var id = _ref.id;
+  matches: function matches() {
+    return __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get(URL_MATCHES);
+  },
+  match: function match(_ref) {
+    var id = _ref.id;
 
-        return __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get(URL_MATCH + id);
-    },
-    move: function move(_ref2) {
-        var id = _ref2.id,
-            position = _ref2.position;
+    return __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get(URL_MATCH + id);
+  },
+  leave: function leave() {
+    return __WEBPACK_IMPORTED_MODULE_0_axios___default.a.put(URL_MATCH_LEAVE);
+  },
+  currentPlayer: function currentPlayer(_ref2) {
+    var id = _ref2.id;
 
-        return __WEBPACK_IMPORTED_MODULE_0_axios___default.a.put(URL_MOVE + id, {
-            position: position
-        });
-    },
-    create: function create() {
-        return __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post(URL_CREATE);
-    },
-    destroy: function destroy(_ref3) {
-        var id = _ref3.id;
+    return __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get(sprintf(URL_MATCH_PLAYER_CURRENT, id));
+  },
+  registerPlayer: function registerPlayer(_ref3) {
+    var player = _ref3.player,
+        match_id = _ref3.match_id;
 
-        return __WEBPACK_IMPORTED_MODULE_0_axios___default.a.delete(URL_DELETE + id);
-    }
+    return __WEBPACK_IMPORTED_MODULE_0_axios___default.a.put(sprintf(URL_MATCH_PLAYER_REGISTER, match_id), {
+      player: player
+    });
+  },
+  move: function move(_ref4) {
+    var id = _ref4.id,
+        position = _ref4.position;
+
+    return __WEBPACK_IMPORTED_MODULE_0_axios___default.a.put(URL_MOVE + id, {
+      position: position
+    });
+  },
+  create: function create() {
+    return __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post(URL_CREATE);
+  },
+  destroy: function destroy(_ref5) {
+    var id = _ref5.id;
+
+    return __WEBPACK_IMPORTED_MODULE_0_axios___default.a.delete(URL_DELETE + id);
+  }
 });
 
 /***/ }),
 /* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
+(function(window) {
+    var re = {
+        not_string: /[^s]/,
+        number: /[diefg]/,
+        json: /[j]/,
+        not_json: /[^j]/,
+        text: /^[^\x25]+/,
+        modulo: /^\x25{2}/,
+        placeholder: /^\x25(?:([1-9]\d*)\$|\(([^\)]+)\))?(\+)?(0|'[^$])?(-)?(\d+)?(?:\.(\d+))?([b-gijosuxX])/,
+        key: /^([a-z_][a-z_\d]*)/i,
+        key_access: /^\.([a-z_][a-z_\d]*)/i,
+        index_access: /^\[(\d+)\]/,
+        sign: /^[\+\-]/
+    }
+
+    function sprintf() {
+        var key = arguments[0], cache = sprintf.cache
+        if (!(cache[key] && cache.hasOwnProperty(key))) {
+            cache[key] = sprintf.parse(key)
+        }
+        return sprintf.format.call(null, cache[key], arguments)
+    }
+
+    sprintf.format = function(parse_tree, argv) {
+        var cursor = 1, tree_length = parse_tree.length, node_type = "", arg, output = [], i, k, match, pad, pad_character, pad_length, is_positive = true, sign = ""
+        for (i = 0; i < tree_length; i++) {
+            node_type = get_type(parse_tree[i])
+            if (node_type === "string") {
+                output[output.length] = parse_tree[i]
+            }
+            else if (node_type === "array") {
+                match = parse_tree[i] // convenience purposes only
+                if (match[2]) { // keyword argument
+                    arg = argv[cursor]
+                    for (k = 0; k < match[2].length; k++) {
+                        if (!arg.hasOwnProperty(match[2][k])) {
+                            throw new Error(sprintf("[sprintf] property '%s' does not exist", match[2][k]))
+                        }
+                        arg = arg[match[2][k]]
+                    }
+                }
+                else if (match[1]) { // positional argument (explicit)
+                    arg = argv[match[1]]
+                }
+                else { // positional argument (implicit)
+                    arg = argv[cursor++]
+                }
+
+                if (get_type(arg) == "function") {
+                    arg = arg()
+                }
+
+                if (re.not_string.test(match[8]) && re.not_json.test(match[8]) && (get_type(arg) != "number" && isNaN(arg))) {
+                    throw new TypeError(sprintf("[sprintf] expecting number but found %s", get_type(arg)))
+                }
+
+                if (re.number.test(match[8])) {
+                    is_positive = arg >= 0
+                }
+
+                switch (match[8]) {
+                    case "b":
+                        arg = arg.toString(2)
+                    break
+                    case "c":
+                        arg = String.fromCharCode(arg)
+                    break
+                    case "d":
+                    case "i":
+                        arg = parseInt(arg, 10)
+                    break
+                    case "j":
+                        arg = JSON.stringify(arg, null, match[6] ? parseInt(match[6]) : 0)
+                    break
+                    case "e":
+                        arg = match[7] ? arg.toExponential(match[7]) : arg.toExponential()
+                    break
+                    case "f":
+                        arg = match[7] ? parseFloat(arg).toFixed(match[7]) : parseFloat(arg)
+                    break
+                    case "g":
+                        arg = match[7] ? parseFloat(arg).toPrecision(match[7]) : parseFloat(arg)
+                    break
+                    case "o":
+                        arg = arg.toString(8)
+                    break
+                    case "s":
+                        arg = ((arg = String(arg)) && match[7] ? arg.substring(0, match[7]) : arg)
+                    break
+                    case "u":
+                        arg = arg >>> 0
+                    break
+                    case "x":
+                        arg = arg.toString(16)
+                    break
+                    case "X":
+                        arg = arg.toString(16).toUpperCase()
+                    break
+                }
+                if (re.json.test(match[8])) {
+                    output[output.length] = arg
+                }
+                else {
+                    if (re.number.test(match[8]) && (!is_positive || match[3])) {
+                        sign = is_positive ? "+" : "-"
+                        arg = arg.toString().replace(re.sign, "")
+                    }
+                    else {
+                        sign = ""
+                    }
+                    pad_character = match[4] ? match[4] === "0" ? "0" : match[4].charAt(1) : " "
+                    pad_length = match[6] - (sign + arg).length
+                    pad = match[6] ? (pad_length > 0 ? str_repeat(pad_character, pad_length) : "") : ""
+                    output[output.length] = match[5] ? sign + arg + pad : (pad_character === "0" ? sign + pad + arg : pad + sign + arg)
+                }
+            }
+        }
+        return output.join("")
+    }
+
+    sprintf.cache = {}
+
+    sprintf.parse = function(fmt) {
+        var _fmt = fmt, match = [], parse_tree = [], arg_names = 0
+        while (_fmt) {
+            if ((match = re.text.exec(_fmt)) !== null) {
+                parse_tree[parse_tree.length] = match[0]
+            }
+            else if ((match = re.modulo.exec(_fmt)) !== null) {
+                parse_tree[parse_tree.length] = "%"
+            }
+            else if ((match = re.placeholder.exec(_fmt)) !== null) {
+                if (match[2]) {
+                    arg_names |= 1
+                    var field_list = [], replacement_field = match[2], field_match = []
+                    if ((field_match = re.key.exec(replacement_field)) !== null) {
+                        field_list[field_list.length] = field_match[1]
+                        while ((replacement_field = replacement_field.substring(field_match[0].length)) !== "") {
+                            if ((field_match = re.key_access.exec(replacement_field)) !== null) {
+                                field_list[field_list.length] = field_match[1]
+                            }
+                            else if ((field_match = re.index_access.exec(replacement_field)) !== null) {
+                                field_list[field_list.length] = field_match[1]
+                            }
+                            else {
+                                throw new SyntaxError("[sprintf] failed to parse named argument key")
+                            }
+                        }
+                    }
+                    else {
+                        throw new SyntaxError("[sprintf] failed to parse named argument key")
+                    }
+                    match[2] = field_list
+                }
+                else {
+                    arg_names |= 2
+                }
+                if (arg_names === 3) {
+                    throw new Error("[sprintf] mixing positional and named placeholders is not (yet) supported")
+                }
+                parse_tree[parse_tree.length] = match
+            }
+            else {
+                throw new SyntaxError("[sprintf] unexpected placeholder")
+            }
+            _fmt = _fmt.substring(match[0].length)
+        }
+        return parse_tree
+    }
+
+    var vsprintf = function(fmt, argv, _argv) {
+        _argv = (argv || []).slice(0)
+        _argv.splice(0, 0, fmt)
+        return sprintf.apply(null, _argv)
+    }
+
+    /**
+     * helpers
+     */
+    function get_type(variable) {
+        return Object.prototype.toString.call(variable).slice(8, -1).toLowerCase()
+    }
+
+    function str_repeat(input, multiplier) {
+        return Array(multiplier + 1).join(input)
+    }
+
+    /**
+     * export to either browser or node.js
+     */
+    if (true) {
+        exports.sprintf = sprintf
+        exports.vsprintf = vsprintf
+    }
+    else {
+        window.sprintf = sprintf
+        window.vsprintf = vsprintf
+
+        if (typeof define === "function" && define.amd) {
+            define(function() {
+                return {
+                    sprintf: sprintf,
+                    vsprintf: vsprintf
+                }
+            })
+        }
+    }
+})(typeof window === "undefined" ? this : window);
+
+
+/***/ }),
+/* 44 */
+/***/ (function(module, exports, __webpack_require__) {
+
 var disposed = false
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(44)
+var __vue_script__ = __webpack_require__(45)
 /* template */
-var __vue_template__ = __webpack_require__(45)
+var __vue_template__ = __webpack_require__(46)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -47563,11 +47843,17 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -47619,7 +47905,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -47638,60 +47924,92 @@ var render = function() {
       "div",
       { staticClass: "list-group list-group-flush" },
       [
-        _vm.matches.length
-          ? _vm._l(_vm.matches, function(match) {
-              return _c(
-                "div",
-                {
-                  staticClass:
-                    "list-group-item text-body d-flex justify-content-between "
-                },
-                [
-                  _vm._v(
-                    "\n                " +
-                      _vm._s(match.name) +
-                      "\n                "
-                  ),
-                  _c("div", { attrs: { role: "group" } }, [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-info",
-                        attrs: { type: "button" },
-                        on: {
-                          click: function($event) {
-                            _vm.showMatch(match.id)
-                          }
-                        }
-                      },
-                      [
-                        _vm._v(
-                          "\n                        join\n                    "
-                        )
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-danger",
-                        attrs: { type: "button" },
-                        on: {
-                          click: function($event) {
-                            _vm.removeMatch(match.id)
-                          }
-                        }
-                      },
-                      [
-                        _vm._v(
-                          "\n                        remove\n                    "
-                        )
-                      ]
-                    )
+        _vm.loading === false
+          ? [
+              !_vm.matches.length
+                ? _c("div", [
+                    _c("p", { staticClass: "alert alert-info" }, [
+                      _vm._v("No matches created yet. Be the first one :)")
+                    ])
                   ])
-                ]
-              )
-            })
+                : _vm._e(),
+              _vm._v(" "),
+              _vm._l(_vm.matches, function(match) {
+                return _c(
+                  "div",
+                  {
+                    staticClass:
+                      "list-group-item text-body d-flex justify-content-between "
+                  },
+                  [
+                    _vm._v(
+                      "\n                " +
+                        _vm._s(match.name) +
+                        "\n                "
+                    ),
+                    _c("div", { attrs: { role: "group" } }, [
+                      match.player_1 == null || match.player_2 == null
+                        ? _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-info",
+                              attrs: { type: "button" },
+                              on: {
+                                click: function($event) {
+                                  _vm.showMatch(match.id)
+                                }
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n                        join\n                    "
+                              )
+                            ]
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      !(match.player_1 == null || match.player_2 == null)
+                        ? _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-dark",
+                              attrs: { type: "button" },
+                              on: {
+                                click: function($event) {
+                                  _vm.showMatch(match.id)
+                                }
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n                        View\n                    "
+                              )
+                            ]
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-danger",
+                          attrs: { type: "button" },
+                          on: {
+                            click: function($event) {
+                              _vm.removeMatch(match.id)
+                            }
+                          }
+                        },
+                        [
+                          _vm._v(
+                            "\n                        remove\n                    "
+                          )
+                        ]
+                      )
+                    ])
+                  ]
+                )
+              })
+            ]
           : _c("a", { staticClass: "list-group-item text-body text-center" }, [
               _c("i", { staticClass: "fas fa-cog fa-spin" }),
               _vm._v(" loading...\n        ")
@@ -47724,19 +48042,19 @@ if (false) {
 }
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(47)
+  __webpack_require__(48)
 }
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(52)
+var __vue_script__ = __webpack_require__(53)
 /* template */
-var __vue_template__ = __webpack_require__(53)
+var __vue_template__ = __webpack_require__(54)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -47775,17 +48093,17 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(48);
+var content = __webpack_require__(49);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(50)("47d27d2f", content, false, {});
+var update = __webpack_require__(51)("47d27d2f", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -47801,10 +48119,10 @@ if(false) {
 }
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(49)(false);
+exports = module.exports = __webpack_require__(50)(false);
 // imports
 
 
@@ -47815,7 +48133,7 @@ exports.push([module.i, "\n.board[data-v-6bfdf79e] {\n    margin: 0 20%;\n    wi
 
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports) {
 
 /*
@@ -47897,7 +48215,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -47916,7 +48234,7 @@ if (typeof DEBUG !== 'undefined' && DEBUG) {
   ) }
 }
 
-var listToStyles = __webpack_require__(51)
+var listToStyles = __webpack_require__(52)
 
 /*
 type StyleObject = {
@@ -48125,7 +48443,7 @@ function applyToTag (styleElement, obj) {
 
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, exports) {
 
 /**
@@ -48158,7 +48476,7 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -48207,68 +48525,88 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
-var RELOAD_TIME = 3000;
+var RELOAD_TIME = 1000;
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['match', 'loading'],
-    data: function data() {
-        return {
-            currentPlayer: null,
-            timeout: null
-        };
-    },
+  props: ['match', 'loading', 'currentPlayer'],
+  data: function data() {
+    return {
 
-    computed: {
-        ended: function ended() {
-            return this.match.winner !== 0;
-        }
-    },
-    methods: {
-        playAs: function playAs(player) {
-            this.currentPlayer = player;
-        },
-        field: function field(index) {
-            return this.player(this.match.board[index]);
-        },
-        next: function next() {
-            return this.player(this.match.next);
-        },
-        winner: function winner() {
-            return this.player(this.match.winner);
-        },
-        player: function player(value) {
-            return value === 1 ? 'X' : value === 2 ? 'O' : '';
-        },
-        move: function move(position) {
-            if (this.match.next !== this.currentPlayer) {
-                alert('Not your turn!');
-                return;
-            }
-            this.$emit('move', {
-                position: position,
-                id: this.match.id
-            });
-        },
-        load: function load() {
-            if (!this.loading) {
-                this.$emit('load');
-            }
-            if (!this.ended) {
-                this.timeout = setTimeout(this.load, RELOAD_TIME);
-            }
-        },
-        back: function back() {
-            clearTimeout(this.timeout);
-            this.$emit('showMatches');
-        }
-    },
-    mounted: function mounted() {
-        this.timeout = setTimeout(this.load, RELOAD_TIME / 3);
+      timeout: null
+    };
+  },
+
+  computed: {
+    ended: function ended() {
+      return this.match.winner !== 0;
     }
+  },
+  methods: {
+    playAs: function playAs(player) {
+      this.$emit('playAs', {
+        player: player,
+        match_id: this.match.id
+      });
+    },
+    field: function field(index) {
+      return this.player(this.match.board[index]);
+    },
+    next: function next() {
+      return this.player(this.match.next);
+    },
+    currentPlayerSign: function currentPlayerSign() {
+      if (!this.currentPlayer) {
+        return "Watching...";
+      }
+      return this.player(this.currentPlayer);
+    },
+    winner: function winner() {
+      return this.player(this.match.winner);
+    },
+    player: function player(value) {
+      return value === 1 ? 'X' : value === 2 ? 'O' : '';
+    },
+    move: function move(position) {
+      if (this.match.winner !== 0) {
+        return alert('The winner is: ' + (this.match.winner === 1 ? 'X' : 'O'));
+      }
+      if (this.match.next !== this.currentPlayer) {
+        alert('Not your turn!');
+        return;
+      }
+      this.$emit('move', {
+        position: position,
+        id: this.match.id
+      });
+    },
+    load: function load() {
+      if (!this.loading) {
+        this.$emit('load');
+      }
+      if (!this.ended) {
+        this.timeout = setTimeout(this.load, RELOAD_TIME);
+      }
+    },
+    back: function back() {
+      clearTimeout(this.timeout);
+      this.$emit('showMatches');
+    }
+  },
+  mounted: function mounted() {
+    this.timeout = setTimeout(this.load, RELOAD_TIME / 3);
+    this.$emit('fetchCurrentPlayer', { id: this.match.id });
+    this.$emit('newSession');
+  }
 });
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -48278,27 +48616,37 @@ var render = function() {
   return _c("div", { staticClass: "card card-default bg-info text-white" }, [
     _c("div", { staticClass: "card-header" }, [
       _c("h3", [
-        _vm._v("\n        " + _vm._s(_vm.match.name) + "\n        "),
+        _vm._v(
+          "\n        " +
+            _vm._s(_vm.match.name) +
+            " - You: " +
+            _vm._s(_vm.currentPlayerSign()) +
+            "\n        "
+        ),
         _vm.loading ? _c("i", { staticClass: "fas fa-cog fa-spin" }) : _vm._e()
       ])
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "card-body text-center" }, [
       _vm.ended
-        ? _c("p", { staticClass: "card-text" }, [
-            _vm._v("The winner is: " + _vm._s(_vm.winner()))
+        ? _c("p", { staticClass: "card-text alert alert-success" }, [
+            _vm.match.winner < 3
+              ? _c("span", [_vm._v("The winner is: " + _vm._s(_vm.winner()))])
+              : _c("span", [_vm._v("Draw!")])
           ])
-        : _c("p", { staticClass: "card-text" }, [
-            _vm._v("Next: " + _vm._s(_vm.next()))
+        : _c("p", { staticClass: "card-text alert alert-success" }, [
+            _vm._v("Next to play: " + _vm._s(_vm.next()))
           ]),
       _vm._v(" "),
-      !_vm.currentPlayer
+      !_vm.currentPlayer &&
+      (_vm.match.player_1 == null || _vm.match.player_2 == null)
         ? _c("div", [
             _vm._v("\n            Who are you?\n            "),
             _c(
               "button",
               {
                 staticClass: "btn btn-light",
+                attrs: { disabled: _vm.match.player_1 !== null },
                 on: {
                   click: function($event) {
                     _vm.playAs(1)
@@ -48312,6 +48660,7 @@ var render = function() {
               "button",
               {
                 staticClass: "btn btn-light",
+                attrs: { disabled: _vm.match.player_2 !== null },
                 on: {
                   click: function($event) {
                     _vm.playAs(2)
@@ -48322,6 +48671,14 @@ var render = function() {
             )
           ])
         : _c("div", [
+            _vm.match.player_1 == null || _vm.match.player_2 == null
+              ? _c("div", { staticClass: "alert alert-dark" }, [
+                  _vm._v(
+                    "\n                Waiting for next player to connect\n            "
+                  )
+                ])
+              : _vm._e(),
+            _vm._v(" "),
             _c("table", { staticClass: "board", attrs: { id: "board" } }, [
               _c("tr", [
                 _c(
@@ -48475,7 +48832,7 @@ if (false) {
 }
 
 /***/ }),
-/* 54 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -48504,12 +48861,23 @@ var render = function() {
           _vm.inMatch
             ? [
                 _c("match", {
-                  attrs: { match: _vm.match, loading: _vm.loading },
+                  attrs: {
+                    match: _vm.match,
+                    currentPlayer: _vm.currentPlayer,
+                    loading: _vm.loading
+                  },
                   on: {
                     load: function($event) {
                       _vm.loadMatch(_vm.match.id)
                     },
+                    fetchCurrentPlayer: function($event) {
+                      _vm.fetchCurrentPlayer(_vm.match.id)
+                    },
+                    newSession: function($event) {
+                      _vm.restartSession()
+                    },
                     move: _vm.handleMove,
+                    playAs: _vm.fillPlayerSlot,
                     showMatches: _vm.showMatches
                   }
                 })
@@ -48532,7 +48900,7 @@ if (false) {
 }
 
 /***/ }),
-/* 55 */
+/* 56 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
