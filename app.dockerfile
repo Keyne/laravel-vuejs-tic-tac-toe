@@ -7,7 +7,8 @@ RUN apt-get update && apt-get install -y libmcrypt-dev \
     && docker-php-ext-install mcrypt pdo_mysql \
     && apt-get update && apt-get install -y gnupg \
     && curl -sL https://deb.nodesource.com/setup_6.x | bash - \
-    && apt-get install -y nodejs
+    && apt-get install -y nodejs \
+    && apt-get install -y git
 
 RUN yes | pecl install xdebug \
     && echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" > /usr/local/etc/php/conf.d/xdebug.ini \

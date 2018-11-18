@@ -12,21 +12,25 @@ if [ ! -f .env ]; then
     cp .env.example .env
 fi
 
-# Composer dependencies
-echo "### Installing composer dependencies ###"
-docker run --rm --interactive --tty \
-    --volume $PWD:/app \
-    composer install
-
 # NPM dependencies
 echo "### Installing npm dependencies ###"
 ./run npm install
 
+echo "### Installing composer dependencies ###"
+./run composer install
+
 # Application setup
 echo "### Application setup ###"
 ./run php artisan key:generate
+./run php artisan migrate:reset
 ./run php artisan migrate
+
+echo "### Running tests ###"
 ./run vendor/bin/phpunit -c phpunit.xml
+
+echo "### Clearing database ###"
+./run php artisan migrate:reset
+./run php artisan migrate
 
 echo "### DONE! ###"
 echo ""
