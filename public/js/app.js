@@ -14015,16 +14015,15 @@ window.Vue = __webpack_require__(37);
 var App = __webpack_require__(40);
 
 var app = new Vue({
-    el: '#app',
-    components: {
-        'app': App
-    }
+  el: '#app',
+  components: {
+    'app': App
+  }
 });
 
 /***/ }),
 /* 15 */
 /***/ (function(module, exports, __webpack_require__) {
-
 
 window._ = __webpack_require__(16);
 window.Popper = __webpack_require__(4).default;
@@ -47527,6 +47526,7 @@ var MATCHES = 'matches',
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
 
+
 var sprintf = __webpack_require__(43).sprintf;
 
 var URL_MATCHES = '/api/match',
@@ -47888,20 +47888,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['matches', 'loading'],
-    methods: {
-        showMatch: function showMatch(id) {
-            this.$emit('showMatch', id);
-        },
-        createMatch: function createMatch() {
-            this.$emit('createMatch');
-        },
-        removeMatch: function removeMatch(id) {
-            this.$emit('removeMatch', id);
-        }
+  props: ['matches', 'loading'],
+  methods: {
+    showMatch: function showMatch(id) {
+      this.$emit('showMatch', id);
+    },
+    createMatch: function createMatch() {
+      this.$emit('createMatch');
+    },
+    removeMatch: function removeMatch(id) {
+      this.$emit('removeMatch', id);
     }
+  }
 });
 
 /***/ }),
