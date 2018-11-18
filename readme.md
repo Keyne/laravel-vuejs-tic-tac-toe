@@ -45,5 +45,5 @@ $ vendor/bin/phpcs ./tests
 Open on your browser the following file to view the test coverage results: `tests/build/coverage/index.html`.
  
 ```shell
-$ vendor/bin/phpunit -c ./phpunit.xml
+$ ./phpunit
 ```

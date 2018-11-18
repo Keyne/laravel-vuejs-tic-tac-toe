@@ -1,0 +1,7 @@
+#!/bin/bash
+
+./run php artisan migrate:reset
+./run php artisan migrate
+./run vendor/bin/phpunit -c phpunit.xml
+./run php artisan migrate:reset
+./run php artisan migrate
