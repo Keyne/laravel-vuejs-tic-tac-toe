@@ -184,7 +184,7 @@ class WinnerChecker implements WinnerCheckerInterface
     }
 
     /**
-     * Checks cols for a winner
+     * Checks diagonals for a winner
      *
      * @param  array $board
      * @param  int   $player
