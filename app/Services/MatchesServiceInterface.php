@@ -60,5 +60,5 @@ interface MatchesServiceInterface
      * @param  $player
      * @return bool
      */
-    public function checkWinner(Match $match, $player): bool;
+    public function checkWinner(Match $match, int $player): bool;
 }
