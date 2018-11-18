@@ -2,13 +2,13 @@
 
 namespace Tests\Feature;
 
-use Symfony\Component\HttpKernel\Exception\HttpException;
+use Illuminate\Support\Facades\URL;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ApiTest extends TestCase
 {
-    use RefreshDatabase;
+    //use RefreshDatabase;
 
     const URL_MATCHES = '/api/match',
           URL_MATCH = '/api/match/',
@@ -18,6 +18,33 @@ class ApiTest extends TestCase
           URL_MOVE = '/api/match/%s',
           URL_CREATE = '/api/match',
           URL_DELETE = '/api/match/%s';
+
+    const JSON_PATTERN = '{"id":1,"name":"Match 1","winner":0}';
+
+
+    public function get($uri, array $headers = [])
+    {
+        $uri = $this->prepareUrlForRequest('http://web' . $uri);
+        return parent::get($uri, $headers);
+    }
+
+    public function post($uri, array $data = [], array $headers = [])
+    {
+        $uri = $this->prepareUrlForRequest('http://web' . $uri);
+        return parent::post($uri, $data, $headers);
+    }
+
+    public function put($uri, array $data = [], array $headers = [])
+    {
+        $uri = $this->prepareUrlForRequest('http://web' . $uri);
+        return parent::put($uri, $data, $headers);
+    }
+
+    public function delete($uri, array $data = [], array $headers = [])
+    {
+        $uri = $this->prepareUrlForRequest('http://web' . $uri);
+        return parent::delete($uri, $data, $headers);
+    }
 
     /**
      * Test index
@@ -41,7 +68,7 @@ class ApiTest extends TestCase
         session()->start();
         session()->put('sessionId', '123');
 
-        $matchJson = json_decode('{"id":1,"name":"Match 1","winner":0}', true);
+        $matchJson = json_decode(self::JSON_PATTERN, true);
 
         $this
             ->get(self::URL_MATCHES, [])
@@ -49,20 +76,20 @@ class ApiTest extends TestCase
 
         $this
             ->post(self::URL_CREATE, [])
-            ->assertJsonFragment($matchJson)
-            ->json();
-
+            ->assertJsonFragment($matchJson);
     }
 
     public function testJoinMatch()
     {
-        $matchJson = json_decode('{"id":1,"name":"Match 1","winner":0}', true);
+        $matchJson = json_decode(self::JSON_PATTERN, true);
 
         $result = $this
             ->get(self::URL_MATCHES, [])
             ->assertJsonFragment($matchJson)
             ->json();
         ;
+
+        //dd($result);
 
         $match = array_pop($result);
 
@@ -110,7 +137,7 @@ class ApiTest extends TestCase
 
     public function testMove()
     {
-        $matchJson = json_decode('{"id":1,"name":"Match 1","winner":0}', true);
+        $matchJson = json_decode(self::JSON_PATTERN, true);
 
         $result = $this
             ->get(self::URL_MATCHES, [])

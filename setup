@@ -26,6 +26,7 @@ echo "### Installing npm dependencies ###"
 echo "### Application setup ###"
 ./run php artisan key:generate
 ./run php artisan migrate
+./run vendor/bin/phpunit -c phpunit.xml
 
 echo "### DONE! ###"
 echo ""

@@ -12,6 +12,8 @@ services:
     environment:
       - "DB_PORT=3306"
       - "DB_HOST=database"
+    networks:
+      - php-network
 
   # The Web Server
   web:
@@ -23,6 +25,8 @@ services:
       - app
     ports:
       - 8080:80
+    networks:
+      - php-network
 
   # The Database
   database:
@@ -35,7 +39,13 @@ services:
       - "MYSQL_PASSWORD=secret"
       - "MYSQL_ROOT_PASSWORD=secret"
     ports:
-        - "33061:3306"
+      - "33061:3306"
+    networks:
+      - php-network
+
+networks:
+  php-network:
+    driver: bridge
 
 volumes:
   dbdata:
